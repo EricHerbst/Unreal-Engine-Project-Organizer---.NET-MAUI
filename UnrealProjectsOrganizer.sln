@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35303.130
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnrealProjectsOrganizer", "UnrealProjectsOrganizer\UnrealProjectsOrganizer.csproj", "{3A05320F-9C01-4A6A-AC00-8BC9935EC8B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnrealProjectsOrganizer_MauiInterface", "UnrealProjectsOrganizer_MauiInterface\UnrealProjectsOrganizer_MauiInterface.csproj", "{5BD6626E-90E4-4CFB-AAD9-D97E149CA86B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A05320F-9C01-4A6A-AC00-8BC9935EC8B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A05320F-9C01-4A6A-AC00-8BC9935EC8B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A05320F-9C01-4A6A-AC00-8BC9935EC8B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A05320F-9C01-4A6A-AC00-8BC9935EC8B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BD6626E-90E4-4CFB-AAD9-D97E149CA86B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BD6626E-90E4-4CFB-AAD9-D97E149CA86B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BD6626E-90E4-4CFB-AAD9-D97E149CA86B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5BD6626E-90E4-4CFB-AAD9-D97E149CA86B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BD6626E-90E4-4CFB-AAD9-D97E149CA86B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BD6626E-90E4-4CFB-AAD9-D97E149CA86B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F6C0FE9-6CEA-427E-BC00-681D7E0D6E79}
+	EndGlobalSection
+EndGlobal
