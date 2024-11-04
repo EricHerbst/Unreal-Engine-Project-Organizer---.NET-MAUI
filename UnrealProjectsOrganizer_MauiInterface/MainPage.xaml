@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UnrealProjectsOrganizer_MauiInterface.MainPage">
+
+    <CollectionView ItemsSource="{Binding Projects}"
+                    x:Name="ProjectCollectionView">
+
+        <!-- Layout -->
+        <CollectionView.ItemsLayout>
+            <GridItemsLayout Orientation="Vertical"
+                             Span="2"
+                             VerticalItemSpacing="1"
+                             HorizontalItemSpacing="1"/>
+        </CollectionView.ItemsLayout>
+
+        <!-- Template -->
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Grid ColumnDefinitions=".3*,.4*,.3*"
+                      RowDefinitions="*,*,*,*"  
+                      BackgroundColor="Black"
+                      Padding="5, 10, 5, 20">
+
+                    <Image Grid.Row="0"
+                           Grid.RowSpan="4"
+                           VerticalOptions="CenterAndExpand"
+                           Grid.Column="0"
+                           HorizontalOptions="Center"
+                           Margin="30,20,30,20"
+                           Source="{Binding ScreenshotPath}}"/>
+
+                    <Label Text="{Binding ProjectFolderName}" 
+                           FontSize="Large"
+                           TextColor="White"
+                           Grid.Row="0"
+                           Grid.Column="1"
+                           VerticalOptions="Center"/>
+
+                    <Label Text="{Binding LastProjectAccessDate, StringFormat='Last Accessed: {0}'}" 
+                           FontSize="12"
+                           TextColor="LightGray"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           VerticalOptions="Center"/>
+
+                    <Label Text="{Binding ProjectModifiedDate, StringFormat='Last Modified: {0}'}"
+                           FontSize="12"
+                           TextColor="LightGray"
+                           Grid.Row="2"
+                           Grid.Column="1"
+                           VerticalOptions="Center"/>
+
+                    <Label Text="{Binding ProjectCreationDate, StringFormat='Created: {0}'}" 
+                           FontSize="12"
+                           TextColor="LightGray"
+                           Grid.Row="3"
+                           Grid.Column="1"
+                           VerticalOptions="Center"/>
+
+                    <Button CommandParameter="{Binding}"
+                            Command="{Binding  Path= BindingContext.OpenProjectCommand, Source={Reference ProjectCollectionView }}"  
+                                 
+                            Text="Open"
+                            TextColor="White"
+                        
+                            CornerRadius="5"
+                            HeightRequest="20"
+                            WidthRequest="100"
+                        
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                        
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+
+                        <Button.Triggers>
+                            <Trigger TargetType="Button" Property="IsFocused" Value="True">
+                                <Setter Property="BackgroundColor" Value="Pink"/>
+                            </Trigger>
+                            <Trigger TargetType="Button" Property="IsFocused" Value="False">
+                                <Setter Property="BackgroundColor" Value="MediumPurple"/>
+                            </Trigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>
+
