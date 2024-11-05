@@ -3,20 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UnrealProjectsOrganizer_MauiInterface.MainPage">
 
+    <!-- Define Key Styles-->
+    <ContentPage.Resources>
+        <Color x:Key="textColor">White</Color>
+        <Style TargetType="Button"
+               x:Key="buttonStyle">
+            <Setter Property="TextColor" Value="{StaticResource textColor}}"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="HeightRequest" Value="20"/>
+            <Setter Property="WidthRequest" Value="100"/>
+            <Setter Property="Grid.RowSpan" Value="2"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <!-- Bind Collection View To Projects Observable Collection -->
     <CollectionView ItemsSource="{Binding Projects}"
                     x:Name="ProjectCollectionView">
 
-        <!-- Layout -->
+        <!-- CV Layout -->
         <CollectionView.ItemsLayout>
             <GridItemsLayout Orientation="Vertical"
-                             Span="2"
+                             Span="3"
                              VerticalItemSpacing="1"
                              HorizontalItemSpacing="1"/>
         </CollectionView.ItemsLayout>
 
-        <!-- Template -->
+        <!-- CV Cell Template -->
         <CollectionView.ItemTemplate>
             <DataTemplate>
+                
                 <Grid ColumnDefinitions=".3*,.4*,.3*"
                       RowDefinitions="*,*,*,*"  
                       BackgroundColor="Black"
@@ -32,49 +49,32 @@
 
                     <Label Text="{Binding ProjectFolderName}" 
                            FontSize="Large"
-                           TextColor="White"
+                           TextColor="{StaticResource textColor}"
                            Grid.Row="0"
                            Grid.Column="1"
                            VerticalOptions="Center"/>
 
-                    <Label Text="{Binding LastProjectAccessDate, StringFormat='Last Accessed: {0}'}" 
+                    <Label Text="{Binding ProjectDirectory}" 
+                           FontSize="Medium"
+                           TextColor="{StaticResource textColor}"
+                           Grid.Row="0"
+                           Grid.Column="1"
+                           VerticalOptions="Center"/>
+
+                    <Label Text="{Binding ProjectModifiedDate, StringFormat='Last Modified: {0}'}" 
                            FontSize="12"
                            TextColor="LightGray"
                            Grid.Row="1"
                            Grid.Column="1"
                            VerticalOptions="Center"/>
 
-                    <Label Text="{Binding ProjectModifiedDate, StringFormat='Last Modified: {0}'}"
-                           FontSize="12"
-                           TextColor="LightGray"
-                           Grid.Row="2"
-                           Grid.Column="1"
-                           VerticalOptions="Center"/>
-
-                    <Label Text="{Binding ProjectCreationDate, StringFormat='Created: {0}'}" 
-                           FontSize="12"
-                           TextColor="LightGray"
-                           Grid.Row="3"
-                           Grid.Column="1"
-                           VerticalOptions="Center"/>
-
-                    <Button CommandParameter="{Binding}"
+                    <Button Style="{StaticResource buttonStyle}"
+                            CommandParameter="{Binding}"
                             Command="{Binding  Path= BindingContext.OpenProjectCommand, Source={Reference ProjectCollectionView }}"  
-                                 
                             Text="Open"
-                            TextColor="White"
-                        
-                            CornerRadius="5"
-                            HeightRequest="20"
-                            WidthRequest="100"
-                        
                             Grid.Column="2"
-                            Grid.Row="0"
-                            Grid.RowSpan="2"
+                            Grid.Row="0">
                         
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center">
-
                         <Button.Triggers>
                             <Trigger TargetType="Button" Property="IsFocused" Value="True">
                                 <Setter Property="BackgroundColor" Value="Pink"/>
@@ -84,6 +84,8 @@
                             </Trigger>
                         </Button.Triggers>
                     </Button>
+                    
+                    
                 </Grid>
             </DataTemplate>
         </CollectionView.ItemTemplate>

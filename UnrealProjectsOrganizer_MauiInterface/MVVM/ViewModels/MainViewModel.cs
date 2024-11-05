@@ -47,14 +47,6 @@ namespace UnrealProjectsOrganizer_MauiInterface.MVVM.ViewModels
             }
         }
 
-        public async void OptionsButtonClicked(object sender)
-        {
-            if (sender is UnrealProject project)
-            {
-
-            }
-        }
-
         public async void DeleteProject(object sender)
         {
             if (sender is UnrealProject project)
