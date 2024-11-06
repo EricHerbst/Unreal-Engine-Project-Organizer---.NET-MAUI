@@ -25,7 +25,7 @@ namespace UnrealProjectsOrganizer
 
             if (!PathDetailsAreComplete(project)) return null;
 
-            // Populate dateTimes for sorting. Less important.
+            // Populate dateTimes for optional sorting. Less important.
             AppendDirectoryTimestamps(project);
 
             return project;
@@ -68,6 +68,7 @@ namespace UnrealProjectsOrganizer
             {
                 string folderPath = Path.GetDirectoryName(filePath);
                 string[] brokenDirectory = folderPath.Split('\\');
+                // Remove last item from array for the combine step
                 Array.Resize(ref brokenDirectory, brokenDirectory.Length - 1);
 
                 return string.Join("\\", brokenDirectory);

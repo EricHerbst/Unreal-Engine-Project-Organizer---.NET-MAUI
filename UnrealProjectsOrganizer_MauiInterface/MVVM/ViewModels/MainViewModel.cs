@@ -15,15 +15,17 @@ namespace UnrealProjectsOrganizer_MauiInterface.MVVM.ViewModels
             get => new Command(OpenProject);
         }
 
+        public ICommand CleanProjectCommand
+        {
+            get => new Command(CleanProject);
+        }
+
         public ICommand DeleteProjectCommand
         {
             get => new Command(DeleteProject);
         }
 
-        public ICommand CleanProjectCommand
-        {
-            get => new Command(CleanProject);
-        }
+
 
         public MainViewModel()
         {
@@ -32,7 +34,14 @@ namespace UnrealProjectsOrganizer_MauiInterface.MVVM.ViewModels
 
         private async Task PopulateProjects()
         {
-            var unrealProjects = await UProjectFetcher.GetAllUnrealProjectsAsync();
+            List<UnrealProject> unrealProjects = await UProjectFetcher.GetAllUnrealProjectsAsync();
+            unrealProjects.ForEach(p =>
+            {
+                // Set unreal logo as default if no image exists
+                if (string.IsNullOrEmpty(p.ScreenshotPath))
+                    p.ScreenshotPath = "unreal_logo.jpg";
+            });
+
             Projects = new ObservableCollection<UnrealProject>(unrealProjects);
         }
 
@@ -47,17 +56,6 @@ namespace UnrealProjectsOrganizer_MauiInterface.MVVM.ViewModels
             }
         }
 
-        public async void DeleteProject(object sender)
-        {
-            if (sender is UnrealProject project)
-            {
-                bool confirmation = await App.Current.MainPage.DisplayAlert("Delete Project", $"Delete {project.ProjectFolderName}?", "Yes", "No");
-                if (!confirmation) return;
-
-                UProjectFileInteraction.DeleteProject(project);
-            }
-        }
-
         public async void CleanProject(object sender)
         {
             if (sender is UnrealProject project)
@@ -66,6 +64,17 @@ namespace UnrealProjectsOrganizer_MauiInterface.MVVM.ViewModels
                 if (!confirmation) return;
 
                 UProjectFileInteraction.CleanForSolutionRebuild(project);
+            }
+        }
+
+        public async void DeleteProject(object sender)
+        {
+            if (sender is UnrealProject project)
+            {
+                bool confirmation = await App.Current.MainPage.DisplayAlert("Delete Project", $"Delete {project.ProjectFolderName}?", "Yes", "No");
+                if (!confirmation) return;
+
+                UProjectFileInteraction.DeleteProject(project);
             }
         }
     }

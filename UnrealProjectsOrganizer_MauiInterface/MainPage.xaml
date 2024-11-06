@@ -3,16 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UnrealProjectsOrganizer_MauiInterface.MainPage">
 
-    <!-- Define Key Styles-->
+    <!-- Define View-Specific Styles. Custom app colours are in Resources/Styles/Colors.xaml -->
     <ContentPage.Resources>
-        <Color x:Key="textColor">White</Color>
-        <Style TargetType="Button"
-               x:Key="buttonStyle">
-            <Setter Property="TextColor" Value="{StaticResource textColor}}"/>
+        <Style TargetType="Label" x:Key="labelStyle">
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="TextColor" Value="{StaticResource PrimaryTextColour}"/>
+        </Style>
+        
+        <Style TargetType="Button" x:Key="buttonStyle">
+            <Setter Property="TextColor" Value="{StaticResource PrimaryTextColour}"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
             <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="HeightRequest" Value="20"/>
+            <Setter Property="HeightRequest" Value="15"/>
             <Setter Property="WidthRequest" Value="100"/>
-            <Setter Property="Grid.RowSpan" Value="2"/>
+            <Setter Property="Margin" Value="10"/>
             <Setter Property="HorizontalOptions" Value="Center"/>
             <Setter Property="VerticalOptions" Value="Center"/>
         </Style>
@@ -20,12 +24,13 @@
 
     <!-- Bind Collection View To Projects Observable Collection -->
     <CollectionView ItemsSource="{Binding Projects}"
-                    x:Name="ProjectCollectionView">
+                    x:Name="ProjectCollectionView"
+                    SelectionMode="None">
 
         <!-- CV Layout -->
         <CollectionView.ItemsLayout>
             <GridItemsLayout Orientation="Vertical"
-                             Span="3"
+                             Span="4"
                              VerticalItemSpacing="1"
                              HorizontalItemSpacing="1"/>
         </CollectionView.ItemsLayout>
@@ -33,62 +38,51 @@
         <!-- CV Cell Template -->
         <CollectionView.ItemTemplate>
             <DataTemplate>
-                
-                <Grid ColumnDefinitions=".3*,.4*,.3*"
-                      RowDefinitions="*,*,*,*"  
-                      BackgroundColor="Black"
-                      Padding="5, 10, 5, 20">
+                <VerticalStackLayout Padding="20" BackgroundColor="Black">
+                    
+                    <Label Text="{Binding ProjectDirectory}" 
+                           FontSize="Small"/>
 
-                    <Image Grid.Row="0"
-                           Grid.RowSpan="4"
-                           VerticalOptions="CenterAndExpand"
-                           Grid.Column="0"
+                    <Image Source="{Binding ScreenshotPath}"
+                           VerticalOptions="CenterAndExpand" 
                            HorizontalOptions="Center"
-                           Margin="30,20,30,20"
-                           Source="{Binding ScreenshotPath}}"/>
+                           HeightRequest="200"
+                           WidthRequest="200"
+                           Margin="30,20,30,20"/>
 
                     <Label Text="{Binding ProjectFolderName}" 
-                           FontSize="Large"
-                           TextColor="{StaticResource textColor}"
-                           Grid.Row="0"
-                           Grid.Column="1"
-                           VerticalOptions="Center"/>
-
-                    <Label Text="{Binding ProjectDirectory}" 
+                           Style="{StaticResource labelStyle}"
                            FontSize="Medium"
-                           TextColor="{StaticResource textColor}"
-                           Grid.Row="0"
-                           Grid.Column="1"
-                           VerticalOptions="Center"/>
+                           Margin="20,0,0,0"/>
 
                     <Label Text="{Binding ProjectModifiedDate, StringFormat='Last Modified: {0}'}" 
+                           Style="{StaticResource labelStyle}"
                            FontSize="12"
-                           TextColor="LightGray"
-                           Grid.Row="1"
-                           Grid.Column="1"
-                           VerticalOptions="Center"/>
+                           TextColor="{StaticResource SecondaryTextColour}"
+                           Margin="20,0,0,0"/>
 
-                    <Button Style="{StaticResource buttonStyle}"
-                            CommandParameter="{Binding}"
-                            Command="{Binding  Path= BindingContext.OpenProjectCommand, Source={Reference ProjectCollectionView }}"  
-                            Text="Open"
-                            Grid.Column="2"
-                            Grid.Row="0">
-                        
-                        <Button.Triggers>
-                            <Trigger TargetType="Button" Property="IsFocused" Value="True">
-                                <Setter Property="BackgroundColor" Value="Pink"/>
-                            </Trigger>
-                            <Trigger TargetType="Button" Property="IsFocused" Value="False">
-                                <Setter Property="BackgroundColor" Value="MediumPurple"/>
-                            </Trigger>
-                        </Button.Triggers>
-                    </Button>
-                    
-                    
-                </Grid>
+                    <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Margin="0,20,0,0">
+                        <Button Style="{StaticResource buttonStyle}"
+                                CommandParameter="{Binding}"
+                                Command="{Binding  Path= BindingContext.OpenProjectCommand, Source={Reference ProjectCollectionView }}"  
+                                Text="Open"
+                                BackgroundColor="#2f004d"/>
+
+                        <Button Style="{StaticResource buttonStyle}"
+                                CommandParameter="{Binding}"
+                                Command="{Binding  Path= BindingContext.CleanProjectCommand, Source={Reference ProjectCollectionView }}"  
+                                Text="Clean"
+                                BackgroundColor="#004d01"/>
+
+                        <Button Style="{StaticResource buttonStyle}"
+                                CommandParameter="{Binding}"
+                                Command="{Binding  Path= BindingContext.DeleteProjectCommand, Source={Reference ProjectCollectionView }}"  
+                                Text="Delete"
+                                BackgroundColor="#4d000a"/>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
             </DataTemplate>
         </CollectionView.ItemTemplate>
     </CollectionView>
 </ContentPage>
-
