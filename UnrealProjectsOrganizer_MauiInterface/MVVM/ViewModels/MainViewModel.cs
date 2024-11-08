@@ -7,8 +7,12 @@ using UnrealProjectsOrganizer.Models;
 namespace UnrealProjectsOrganizer_MauiInterface.MVVM.ViewModels
 {
     class MainViewModel 
-    {
-        public ObservableCollection<UnrealProject> Projects { get; set; }
+    {   
+        private List<UnrealProject> _allProjects = new List<UnrealProject>();
+        private const string DefaultUnrealLogo = "unreal_logo.jpg";
+
+        // After some experience, probably not the best choice. See SetDisplayedProjects comments.
+        public ObservableCollection<UnrealProject> Projects { get; set; } = new ObservableCollection<UnrealProject>();
 
         public ICommand OpenProjectCommand
         {
@@ -26,23 +30,49 @@ namespace UnrealProjectsOrganizer_MauiInterface.MVVM.ViewModels
         }
 
 
-
         public MainViewModel()
         {
-            PopulateProjects();
+            PopulateAllProjectsAsync();
         }
 
-        private async Task PopulateProjects()
+        private async Task PopulateAllProjectsAsync()
         {
-            List<UnrealProject> unrealProjects = await UProjectFetcher.GetAllUnrealProjectsAsync();
-            unrealProjects.ForEach(p =>
+            _allProjects = await UProjectFetcher.GetAllUnrealProjectsAsync();
+            _allProjects.ForEach(p =>
             {
                 // Set unreal logo as default if no image exists
                 if (string.IsNullOrEmpty(p.ScreenshotPath))
-                    p.ScreenshotPath = "unreal_logo.jpg";
+                    p.ScreenshotPath = DefaultUnrealLogo;
             });
 
-            Projects = new ObservableCollection<UnrealProject>(unrealProjects);
+            SetDisplayedProjects(_allProjects);            
+        }
+
+        /// <summary>
+        /// Filter project names by provided string
+        /// </summary>
+        public void RunProjectNameFilter(object sender, TextChangedEventArgs e)
+        {
+            var filterValue = e.NewTextValue.ToLower();
+
+            if (string.IsNullOrEmpty(filterValue))
+            {
+                SetDisplayedProjects(_allProjects);
+                return;
+            }
+
+            List<UnrealProject> filteredProjects = _allProjects.Where(p => p.ProjectFolderName.ToLower().Contains(filterValue)).ToList();
+            SetDisplayedProjects(filteredProjects);
+        }
+
+        // Can't add range or completely replace with new ObservableCollection(projectsToDisplay) as the events no longer seem to reach the listener.
+        private void SetDisplayedProjects(List<UnrealProject> projectsToDisplay)
+        {
+            Projects.Clear();
+            foreach (var project in projectsToDisplay)
+            {
+                Projects.Add(project);
+            }
         }
 
         public async void OpenProject(object sender)
@@ -60,7 +90,7 @@ namespace UnrealProjectsOrganizer_MauiInterface.MVVM.ViewModels
         {
             if (sender is UnrealProject project)
             {
-                bool confirmation = await App.Current.MainPage.DisplayAlert("Clean Project", $"Clean {project.ProjectFolderName}? \n This will delete the binaries folder, intermediate folder, and the .sln file. ", "Yes", "No");
+                bool confirmation = await Application.Current.MainPage.DisplayAlert("Clean Project", $"Clean {project.ProjectFolderName}? \n This will delete the binaries folder, intermediate folder, and the .sln file. ", "Yes", "No");
                 if (!confirmation) return;
 
                 UProjectFileInteraction.CleanForSolutionRebuild(project);

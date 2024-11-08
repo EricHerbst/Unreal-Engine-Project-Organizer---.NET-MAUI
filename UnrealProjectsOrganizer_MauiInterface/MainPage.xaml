@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="UnrealProjectsOrganizer_MauiInterfac.MVVM.ViewModels"
              x:Class="UnrealProjectsOrganizer_MauiInterface.MainPage">
 
     <!-- Define View-Specific Styles. Custom app colours are in Resources/Styles/Colors.xaml -->
@@ -21,12 +22,27 @@
             <Setter Property="VerticalOptions" Value="Center"/>
         </Style>
     </ContentPage.Resources>
-
+    
+    
     <!-- Bind Collection View To Projects Observable Collection -->
     <CollectionView ItemsSource="{Binding Projects}"
                     x:Name="ProjectCollectionView"
                     SelectionMode="None">
 
+        <!-- CV Header-->
+        <CollectionView.Header>
+            <HorizontalStackLayout>
+                <Label Style="{StaticResource labelStyle}"
+                       Text="Filter"
+                       FontSize="Medium"
+                       Margin="10"/>
+                <Entry WidthRequest="400"
+                       Placeholder="Project Name"
+                       Margin="10"
+                       TextChanged="RunProjectNameFilter"/>
+            </HorizontalStackLayout>
+        </CollectionView.Header>
+        
         <!-- CV Layout -->
         <CollectionView.ItemsLayout>
             <GridItemsLayout Orientation="Vertical"
@@ -41,6 +57,7 @@
                 <VerticalStackLayout Padding="20" BackgroundColor="Black">
                     
                     <Label Text="{Binding ProjectDirectory}" 
+                           Style="{StaticResource labelStyle}"
                            FontSize="Small"/>
 
                     <Image Source="{Binding ScreenshotPath}"
